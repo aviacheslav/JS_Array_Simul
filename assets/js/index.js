@@ -167,6 +167,18 @@ const myArrayPrototype={
             //cbf_via(this[i-1]);
         }  
     },
+    filter:function(cbf_via=null){
+        let R=new MyArray(), cond;//, count=0;
+        if(cbf_via!=null){
+            for(let i=1; i<=this.length; i++){
+                cond=cbf_via(this[i-1], i-1, this);
+                if(cond){
+                    R.push(this[i-1]);
+                }
+            }
+        }
+        return R;
+    },
     mySwap:function(N1, N2){
         let success=true;
         if(isReallyNumber(N1) && isReallyNumber(N2) && N1>=1 && N2>=1 && N1<=this.length && N2<=this.length){
@@ -219,23 +231,23 @@ MyArray.prototype=myArrayPrototype;
 
 
 
-const cbf_for_map=function(value, index, arr){
-    let R, median, sum=0;
-    for(let i=1; i<=arr.length; i++){
-        sum+=arr[i-1];
-    }
-    median=sum/arr.length;
-    if(index%2!==0){
-        R=arr[index];
-    }else{
-        if(value<median){
-            R=value;
-        }else{
-            R=value*10;
-        }
-    }
-    return R;
-}
+// const cbf_for_map=function(value, index, arr){
+//     let R, median, sum=0;
+//     for(let i=1; i<=arr.length; i++){
+//         sum+=arr[i-1];
+//     }
+//     median=sum/arr.length;
+//     if(index%2!==0){
+//         R=arr[index];
+//     }else{
+//         if(value<median){
+//             R=value;
+//         }else{
+//             R=value*10;
+//         }
+//     }
+//     return R;
+// }
 
 let arr1=new MyArray();
 arr1.push(-1);
@@ -256,19 +268,19 @@ arr2.push(4);
 arr2.push(3);
 arr2.push(2);
 arr2.push(1);
-console.log('My arr af many times push: ', arr2);
+console.log('My arr after many times push: ', arr2);
 arr2.unshift(-1);
-console.log('My arr af unshift(-1): ', arr2);
+console.log('My arr after unshift(-1): ', arr2);
 arr2.shift(-1);
-console.log('My arr af shift(): ', arr2);
+console.log('My arr after shift(): ', arr2);
 arr2.push(100);
-console.log('My arr af   push(100): ', arr2);
+console.log('My arr after   push(100): ', arr2);
 arr2.pop();
-console.log('My arr af pop: ', arr2);
+console.log('My arr after pop: ', arr2);
 let arr3=arr2.map(function(val, index){
     return(val+index);
 });
-console.log('My arr af map: ', arr2);
+console.log('My arr after map: ', arr2);
 console.log('arr3=map(arr2): ', arr3);
 console.log('arr2.forEach(): ');
 arr2.forEach(function(val, index, arr){
@@ -279,6 +291,28 @@ let xs='it s a string';
 console.log(MyArray.isMyArray(xn));
 console.log(MyArray.isMyArray(xs));
 console.log(MyArray.isMyArray(arr2));
+let arr4=arr2.filter(function(val, index, arr){
+    let sum=0, med;
+    for(let i=1; i<=arr.length; i++){
+        sum+=arr[i-1];
+    }
+    med=sum/arr.length;
+    return (index%3!==0 && val<=med);
+});
+console.log('arr2 after filter: ', arr2);
+console.log('must be: no 10...6 - no, they are >5; 5; no 4 because it is N6, 3, 2, no 1 because it is N9');
+console.log('arr4=arr2.filter(): ', arr4);
+// let arr5=arr2.filter(function(val, index, arr){
+//     let sum=0, med, verdict;
+//     for(let i=1; i<=arr.length; i++){
+//         sum+=arr[i-1];
+//     }
+//     med=sum/arr.length;
+//     verdict= (index%3!==0 && val<=med);
+//     return verdict;
+// });
+// console.log('arr2 after filter: ', arr2);
+// console.log('arr4=arr2.filter(): ', arr5);
 
 
 
