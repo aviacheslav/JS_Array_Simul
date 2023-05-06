@@ -18,13 +18,24 @@ class MyArray{
     constructor(){
         this.length=0;
     }
-
+	static isMyArray(obj){
+        return (obj instanceof MyArray);
+    }
+	/*
     isMyArray(obj){
         return (obj instanceof MyArray);
     }
-    push(element){
-        this[this.length]=element;
-        this.length++;
+	
+	push(element){
+		this[this.length]=element;
+		this.length++;
+	}
+	*/
+    push(...elements){
+		for(const element of elements){
+			this[this.length]=element;
+			this.length++;
+		}
     }
     pop(){
         if(this.length>0){
@@ -44,8 +55,15 @@ class MyArray{
             return undefined;
         }
     }
-    unshift(onlyOneElement){
+    /*unshift(onlyOneElement){
         this.insert(onlyOneElement, 1);
+        return this.length;
+    }*/
+	unshift(...elements){
+		const L=elements.length;
+		for(let i=L; i>=1; i--){
+			this.insert(elements[i-1], 1);
+		}
         return this.length;
     }
     map(cbf_via=null){ //null
@@ -264,25 +282,21 @@ class MyArray{
     }
 }//class
 
+// class MyArray2D{
+//     constructor(data=null, if1DArray_Ext0Innerr1=0){
+//         this.QExtRows=0;
+//     }
+// }
 
 
-//let arr1=new MyArray();
-//arr1.push(-1);
-//arr1.push(1);
-//console.log('My arr af push -1, 1: ', arr1);
-//arr1.push(2);
-//console.log('My arr af push 2: ', arr1);
-//arr1.pop();
-//console.log('My arr af pop: ', arr1);
+
+
 let arr2=new MyArray();
 arr2.push(10);
 arr2.push(9);
-arr2.push(8);
-arr2.push(7);
-arr2.push(6);
+arr2.push(8, 7, 6);
 arr2.push(5);
-arr2.push(4);
-arr2.push(3);
+arr2.push(4, 3);
 arr2.push(2);
 arr2.push(1);
 console.log('My arr after many times push: ', arr2);
@@ -290,14 +304,19 @@ arr2.unshift(-1);
 console.log('My arr after unshift(-1): ', arr2);
 arr2.shift(-1);
 console.log('My arr after shift(): ', arr2);
+
 arr2.push(100);
 console.log('My arr after   push(100): ', arr2);
 arr2.pop();
 console.log('My arr after pop: ', arr2);
+arr2.unshift(-4, -3, -2, -1);
+console.log('My arr after unshift(-4, -3, -2, -1): ', arr2);
+for(let i=1; i<=4; i++)arr2.shift();
+console.log('My arr shift pop 4 times: ', arr2);
 let arr3=arr2.map(function(val, index){
     return(val+index);
 });
-console.log('My arr after map: ', arr2);
+console.log('My arr after map (initial arr must not be changed): ', arr2);
 console.log('arr3=map(arr2): ', arr3);
 console.log('arr2.forEach(): ');
 arr2.forEach(function(val, index, arr){
@@ -305,15 +324,19 @@ arr2.forEach(function(val, index, arr){
 });
 let xn=5.8;
 let xs='it s a string';
-//co//sole.log(MyArray.isMyArray(xn));
-//console.log(MyArray.isMyArray(xs));
-//console.log(MyArray.isMyArray(arr2));
-console.log(arr2.isMyArray(xn));
-console.log(arr2.isMyArray(xs));
-console.log(arr2.isMyArray(arr2));
-console.log(isMyArray(xn));
-console.log(isMyArray(xs));
-console.log(isMyArray(arr2));
+//console.log(arr2.isMyArray(xn));
+//console.log(arr2.isMyArray(xs));
+//console.log(arr2.isMyArray(arr2));
+//console.log(isMyArray(xn));
+//console.log(isMyArray(xs));
+//console.log(isMyArray(arr2));
+console.log(xn,' - it is My Array? - ',MyArray.isMyArray(xn));
+console.log(xs,' - it is My Array? - ',MyArray.isMyArray(xs));
+console.log(arr2,' - it is My Array? - ',MyArray.isMyArray(arr2));
+console.log(arr3,' - it is My Array? - ',MyArray.isMyArray(arr3));
+//
+
+//
 let arr4=arr2.filter(function(val, index, arr){
     let sum=0, med;
     for(let i=1; i<=arr.length; i++){
